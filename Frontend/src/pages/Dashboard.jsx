@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { expenseService, categoryService } from '../../services/api';
-import Navbar from '../../components/Navbar';
-import ExpenseList from '../../components/ExpenseList';
-import ExpenseForm from '../../components/ExpenseForm';
-import CategoryManager from '../../components/CategoryManager';
+import { useAuth } from '../context/AuthContext';
+import { expenseService, categoryService } from '../services/api';
+import Navbar from '../components/Navbar';
+import ExpenseList from '../components/ExpenseList';
+import ExpenseForm from '../components/ExpenseForm';
+import CategoryManager from '../components/CategoryManager';
 
 export default function Dashboard() {
   const { user } = useAuth();
