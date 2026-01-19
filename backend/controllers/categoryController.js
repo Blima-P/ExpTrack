@@ -12,7 +12,7 @@ const isValidHexColor = (color) =>
 const createCategory = async (req, res) => {
   try {
     const { name, color } = req.body;
-    const userId = req.user.uid;
+    const userId = req.userId;
 
     if (!name || name.trim() === '') {
       return res.status(400).json({
@@ -82,7 +82,7 @@ const createCategory = async (req, res) => {
  */
 const getCategories = async (req, res) => {
   try {
-    const userId = req.user.uid;
+    const userId = req.userId;
 
     const snapshot = await db.collection('categories')
       .where('userId', '==', userId)
@@ -114,7 +114,7 @@ const updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, color } = req.body;
-    const userId = req.user.uid;
+    const userId = req.userId;
 
     // Validação básica
     if (!name || name.trim() === '') {

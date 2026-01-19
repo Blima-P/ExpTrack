@@ -13,7 +13,8 @@ const authMiddleware = async (req, res, next) => {
     // Verifica e decodifica o token
     const decodedToken = await auth.verifyIdToken(idToken);
 
-    // Salva o UID para uso nos controllers
+    // Salva dados do usuário para uso nos controllers
+    req.user = decodedToken;
     req.userId = decodedToken.uid;
 
     next();

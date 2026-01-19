@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/ContextoAutenticacao';
+import ProtectedRoute from './components/RotaProtegida';
 import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import './index.css';
+import Register from './pages/Registro';
+import Dashboard from './pages/PainelControle';
+import './estilos-globais.css';
 
 function App() {
   return (

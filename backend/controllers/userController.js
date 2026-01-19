@@ -8,7 +8,7 @@ const { getCurrentTimestamp } = require("../utils/firestoreHelpers");
 const updateUserName = async (req, res) => {
   try {
     const { name } = req.body;
-    const userId = req.user.uid;
+    const userId = req.userId;
 
     // Validação
     if (!name || name.trim().length < 2) {
