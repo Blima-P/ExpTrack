@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { categoryService } from '../services/api';
+import { IconeAviso, IconeCarregando, IconeLixeira, IconeMais } from './Icones';
 
 export default function CategoryManager({ categories, onCategoryCreated }) {
   const [name, setName] = useState('');
@@ -47,47 +48,48 @@ export default function CategoryManager({ categories, onCategoryCreated }) {
   };
 
   return (
-    <div className="card bg-gradient-to-br from-green-50 to-emerald-50">
-      <h3 className="text-xl font-semibold text-gray-900 mb-6">Gerenciar Categorias</h3>
+    <div className="card bg-white border border-gray-200 p-8 max-w-3xl">
+      <h3 className="text-2xl font-bold text-gray-900 mb-8">Gerenciar Categorias</h3>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
-          {error}
+        <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-xl mb-6 flex items-center gap-3">
+          <IconeAviso size={20} cor="#EF4444" />
+          <p className="font-medium">{error}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4 mb-8 pb-8 border-b border-gray-200">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <form onSubmit={handleSubmit} className="space-y-6 mb-10 pb-10 border-b border-gray-200">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-sm font-semibold text-gray-900 mb-3">
               Nome da Categoria
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="input-field"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               placeholder="Ex: Alimentação"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-sm font-semibold text-gray-900 mb-3">
               Cor
             </label>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <input
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
-                className="w-12 h-12 rounded-lg cursor-pointer"
+                className="w-14 h-14 rounded-xl cursor-pointer border-2 border-gray-300"
               />
               <input
                 type="text"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
-                className="input-field flex-1"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 placeholder="#3B82F6"
               />
             </div>
@@ -97,29 +99,30 @@ export default function CategoryManager({ categories, onCategoryCreated }) {
             <button
               type="submit"
               disabled={loading}
-              className="btn-secondary w-full"
+              className="btn-primary w-full flex items-center justify-center gap-2"
             >
-              {loading ? '⏳ Salvando...' : '➕ Adicionar'}
+              {loading && <IconeCarregando size={20} cor="white" />}
+              {loading ? 'Salvando...' : <><IconeMais size={20} /> Adicionar</>}
             </button>
           </div>
         </div>
       </form>
 
-      <div className="space-y-2">
-        <h4 className="font-semibold text-gray-900 mb-4">Categorias Existentes</h4>
+      <div className="space-y-4">
+        <h4 className="font-bold text-gray-900 text-lg mb-6">Categorias Existentes</h4>
         {categories.length === 0 ? (
-          <p className="text-gray-500">Nenhuma categoria criada ainda</p>
+          <p className="text-gray-500 text-center py-8 font-light">Nenhuma categoria criada ainda</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {categories.map((cat) => (
               <div
                 key={cat.id}
-                className="p-4 rounded-lg border-2 flex items-center justify-between"
-                style={{ borderColor: cat.color, backgroundColor: `${cat.color}10` }}
+                className="p-6 rounded-xl border-2 flex items-center justify-between hover:shadow-md transition-all duration-300"
+                style={{ borderColor: cat.color, backgroundColor: `${cat.color}15` }}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   <div
-                    className="w-6 h-6 rounded-full"
+                    className="w-6 h-6 rounded-full flex-shrink-0"
                     style={{ backgroundColor: cat.color }}
                   ></div>
                   <span className="font-semibold text-gray-900">{cat.name}</span>
@@ -127,9 +130,9 @@ export default function CategoryManager({ categories, onCategoryCreated }) {
                 <button
                   onClick={() => handleDelete(cat.id)}
                   disabled={deletingId === cat.id}
-                  className="btn-danger text-sm py-1 px-2"
+                  className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all duration-300 font-semibold text-sm flex items-center gap-2"
                 >
-                  {deletingId === cat.id ? '⏳' : '🗑️'}
+                  {deletingId === cat.id ? <IconeCarregando size={16} cor="white" /> : <IconeLixeira size={16} cor="white" />}
                 </button>
               </div>
             ))}

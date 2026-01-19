@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { expenseService } from '../services/api';
+import { IconeEditar, IconeLixeira, IconeCarregando } from './Icones';
 
 export default function ExpenseList({ expenses, categories, onExpenseDeleted }) {
   const [deletingId, setDeletingId] = useState(null);
@@ -66,18 +67,18 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
       {expenses.map((expense) => (
         <div
           key={expense.id}
-          className="card flex items-center justify-between hover:shadow-lg transition"
+          className="card bg-white border border-gray-200 p-6 hover:shadow-lg transition-all duration-300"
         >
           {editingId === expense.id ? (
             // Edit Mode
-            <div className="flex-1 space-y-3">
+            <div className="space-y-4">
               <input
                 type="text"
                 value={editForm.description}
                 onChange={(e) =>
                   setEditForm({ ...editForm, description: e.target.value })
                 }
-                className="input-field"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
               <input
                 type="number"
@@ -85,7 +86,7 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                 onChange={(e) =>
                   setEditForm({ ...editForm, value: e.target.value })
                 }
-                className="input-field"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 step="0.01"
               />
               <select
@@ -93,7 +94,7 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                 onChange={(e) =>
                   setEditForm({ ...editForm, categoryId: e.target.value })
                 }
-                className="input-field"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none bg-white"
               >
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
@@ -101,16 +102,16 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                   </option>
                 ))}
               </select>
-              <div className="flex gap-2">
+              <div className="flex gap-3 pt-2">
                 <button
                   onClick={() => handleEditSubmit(expense.id)}
-                  className="btn-secondary"
+                  className="btn-primary flex-1 flex items-center justify-center gap-2"
                 >
                   ✅ Salvar
                 </button>
                 <button
                   onClick={handleEditCancel}
-                  className="btn-danger"
+                  className="btn-secondary flex-1 flex items-center justify-center gap-2"
                 >
                   ❌ Cancelar
                 </button>
@@ -122,14 +123,14 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
               <div className="flex-1">
                 <div className="flex items-center gap-4">
                   <div
-                    className="w-4 h-4 rounded-full"
+                    className="w-4 h-4 rounded-full flex-shrink-0"
                     style={{ backgroundColor: getCategoryColor(expense.categoryId) }}
                   ></div>
-                  <div>
-                    <p className="font-semibold text-gray-900">
+                  <div className="flex-1">
+                    <p className="font-semibold text-gray-900 text-lg">
                       {expense.description}
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 mt-1">
                       {getCategoryName(expense.categoryId)} •{' '}
                       {new Date(expense.createdAt?.seconds * 1000).toLocaleDateString('pt-BR')}
                     </p>
@@ -137,25 +138,25 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                 </div>
               </div>
 
-              <div className="text-right mr-4">
+              <div className="text-right mr-6">
                 <p className="text-2xl font-bold text-gray-900">
                   R$ {expense.value.toFixed(2).replace('.', ',')}
                 </p>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <button
                   onClick={() => handleEditStart(expense)}
-                  className="px-3 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition"
+                  className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition-all duration-300 font-semibold flex items-center gap-2"
                 >
-                  ✏️
+                  <IconeEditar size={18} cor="white" />
                 </button>
                 <button
                   onClick={() => handleDelete(expense.id)}
                   disabled={deletingId === expense.id}
-                  className="btn-danger"
+                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all duration-300 font-semibold flex items-center gap-2"
                 >
-                  {deletingId === expense.id ? '⏳' : '🗑️'}
+                  {deletingId === expense.id ? <IconeCarregando size={18} cor="white" /> : <IconeLixeira size={18} cor="white" />}
                 </button>
               </div>
             </>

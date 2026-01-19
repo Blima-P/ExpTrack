@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { expenseService } from '../services/api';
+import { IconeAviso, IconeCarregando } from './Icones';
 
 export default function ExpenseForm({ categories, onExpenseCreated }) {
   const [value, setValue] = useState('');
@@ -58,26 +59,27 @@ export default function ExpenseForm({ categories, onExpenseCreated }) {
   }
 
   return (
-    <div className="card bg-gradient-to-br from-blue-50 to-indigo-50">
-      <h3 className="text-xl font-semibold text-gray-900 mb-6">Novo Gasto</h3>
+    <div className="card bg-white border border-gray-200 p-8 max-w-2xl">
+      <h3 className="text-2xl font-bold text-gray-900 mb-8">Novo Gasto</h3>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
-          {error}
+        <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-xl mb-6 flex items-center gap-3">
+          <IconeAviso size={20} cor="#EF4444" />
+          <p className="font-medium">{error}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-sm font-semibold text-gray-900 mb-3">
               Valor (R$)
             </label>
             <input
               type="number"
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              className="input-field"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               placeholder="0.00"
               step="0.01"
               required
@@ -85,13 +87,13 @@ export default function ExpenseForm({ categories, onExpenseCreated }) {
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-sm font-semibold text-gray-900 mb-3">
               Categoria
             </label>
             <select
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              className="input-field"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none bg-white"
               required
             >
               {categories.map((cat) => (
@@ -104,13 +106,13 @@ export default function ExpenseForm({ categories, onExpenseCreated }) {
         </div>
 
         <div>
-          <label className="block text-gray-700 font-semibold mb-2">
+          <label className="block text-sm font-semibold text-gray-900 mb-3">
             Descrição
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="input-field resize-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
             placeholder="Descreva o gasto..."
             rows="3"
             required
@@ -120,9 +122,10 @@ export default function ExpenseForm({ categories, onExpenseCreated }) {
         <button
           type="submit"
           disabled={loading}
-          className="btn-primary w-full"
+          className="btn-primary w-full flex items-center justify-center gap-2"
         >
-          {loading ? '⏳ Salvando...' : '💰 Adicionar Gasto'}
+          {loading && <IconeCarregando size={20} cor="white" />}
+          {loading ? 'Salvando...' : <>Adicionar Gasto</>}
         </button>
       </form>
     </div>

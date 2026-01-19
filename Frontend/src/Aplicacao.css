@@ -1,5 +1,273 @@
-/* Estilos específicos da aplicação - Tailwind está em index.css */
+/* Estilos Apple Style com Cores do Grêmio */
+
+:root {
+  --gremio-blue: #003D7A;
+  --gremio-light: #1B5BA0;
+  --gremio-dark: #001D4D;
+  --white: #FFFFFF;
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-600: #4B5563;
+  --gray-900: #111827;
+}
+
+* {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 #root {
   min-height: 100vh;
+  background: linear-gradient(135deg, var(--white) 0%, var(--gray-50) 100%);
+}
+
+/* Inputs - Apple Style */
+.input-field {
+  width: 100%;
+  padding: 16px 18px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  background: var(--white);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-field::placeholder {
+  color: var(--gray-300);
+  font-weight: 400;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--gremio-blue);
+  background: var(--white);
+  box-shadow: 0 0 0 8px rgba(0, 61, 122, 0.08);
+}
+
+.input-field:hover:not(:focus) {
+  border-color: var(--gray-300);
+}
+
+/* Buttons - Apple Style */
+.btn-primary {
+  padding: 16px 32px;
+  background: linear-gradient(135deg, var(--gremio-blue) 0%, var(--gremio-light) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 16px rgba(0, 61, 122, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 61, 122, 0.25);
+}
+
+.btn-primary:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 61, 122, 0.2);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  padding: 16px 32px;
+  background: var(--gray-100);
+  color: var(--gremio-blue);
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary:hover {
+  background: var(--gremio-blue);
+  color: white;
+  border-color: var(--gremio-blue);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 61, 122, 0.15);
+}
+
+.btn-secondary:active {
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  padding: 12px 24px;
+  background: #EF4444;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-danger:hover {
+  background: #DC2626;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+/* Cards - Apple Style */
+.card {
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 32px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--gray-100);
+}
+
+.card:hover {
+  box-shadow: 0 12px 32px rgba(0, 61, 122, 0.12);
+  transform: translateY(-4px);
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: #F59E0B;
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+}
+
+/* Animations - Apple Style */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Labels e Text */
+label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--gray-900);
+  letter-spacing: 0.2px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.text-subtitle {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+/* Links */
+a {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: var(--gremio-blue);
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:hover {
+  color: var(--gremio-light);
+  opacity: 0.8;
 }
