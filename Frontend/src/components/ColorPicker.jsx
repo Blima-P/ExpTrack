@@ -12,7 +12,7 @@ const COLORS = [
   '#22C55E', '#16A34A', '#15803D', '#14532D', '#DCFCE7', '#F0FDF4',
   // azul estranhos
   '#14B8A6', '#0D9488', '#115E59', '#134E4A', '#CCFBF1', '#F0FDFA',
-  // Azuls(da familia do Gremio)
+  // Azuls(Gremio)
   '#003D7A', '#1B5BA0', '#0084D8', '#2563EB', '#1E40AF', '#1E3A8A',
   '#DBEAFE', '#EFF6FF', '#BFDBFE',
   // Indigos
