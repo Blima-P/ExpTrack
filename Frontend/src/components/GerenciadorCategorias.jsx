@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { categoryService } from '../services/api';
 import { IconeAviso, IconeCarregando, IconeLixeira, IconeMais } from './Icones';
+import ColorPicker from './ColorPicker';
 
 export default function CategoryManager({ categories, onCategoryCreated }) {
   const [name, setName] = useState('');
@@ -21,12 +22,16 @@ export default function CategoryManager({ categories, onCategoryCreated }) {
     setLoading(true);
 
     try {
+      console.log('Criando categoria:', { name, color });
       await categoryService.createCategory(name.trim(), color);
       setName('');
       setColor('#3B82F6');
       onCategoryCreated();
+      console.log('Categoria criada com sucesso');
     } catch (err) {
-      setError(err.response?.data?.message || 'Erro ao criar categoria');
+      console.error('Erro completo ao criar categoria:', err);
+      console.error('Detalhes da resposta:', err.response);
+      setError(err.response?.data?.message || err.message || 'Erro ao criar categoria');
     } finally {
       setLoading(false);
     }
@@ -39,9 +44,10 @@ export default function CategoryManager({ categories, onCategoryCreated }) {
     try {
       await categoryService.deleteCategory(id);
       onCategoryCreated();
+      setError('');
     } catch (error) {
       console.error('Erro ao deletar categoria:', error);
-      alert('Erro ao deletar categoria');
+      setError(error.response?.data?.message || 'Erro ao deletar categoria');
     } finally {
       setDeletingId(null);
     }
@@ -78,21 +84,7 @@ export default function CategoryManager({ categories, onCategoryCreated }) {
             <label className="block text-sm font-semibold text-gray-900 mb-3">
               Cor
             </label>
-            <div className="flex gap-3">
-              <input
-                type="color"
-                value={color}
-                onChange={(e) => setColor(e.target.value)}
-                className="w-14 h-14 rounded-xl cursor-pointer border-2 border-gray-300"
-              />
-              <input
-                type="text"
-                value={color}
-                onChange={(e) => setColor(e.target.value)}
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                placeholder="#3B82F6"
-              />
-            </div>
+            <ColorPicker value={color} onChange={setColor} />
           </div>
 
           <div className="flex items-end">

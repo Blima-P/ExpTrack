@@ -85,19 +85,43 @@ const createExpense = async (req, res) => {
 const getExpenses = async (req, res) => {
   try {
     const userId = req.userId;
-    const { categoryId } = req.query;
+    let { categoryId } = req.query;
 
-    // Query base: buscar apenas gastos do usuário
-    let query = db.collection('expenses').where('userId', '==', userId);
+    console.log('========== GETEXPENSES ==========');
+    console.log('userId:', userId);
+    console.log('categoryId from query:', categoryId, 'tipo:', typeof categoryId);
+    console.log('Full req.query:', req.query);
 
-    // Filtro opcional por categoria
-    if (categoryId) {
-      query = query.where('categoryId', '==', categoryId);
+    // Converter "null" string para null real
+    if (categoryId === 'null' || categoryId === '') {
+      categoryId = null;
     }
 
-    const snapshot = await query.orderBy('createdAt', 'desc').get();
-    const expenses = collectionToArray(snapshot);
+    console.log('categoryId após conversão:', categoryId);
 
+    // Query base: buscar apenas gastos do usuário ordenados por data
+    console.log('Executando query...');
+    const query = db.collection('expenses')
+      .where('userId', '==', userId)
+      .orderBy('createdAt', 'desc');
+
+    const snapshot = await query.get();
+    let expenses = collectionToArray(snapshot);
+
+    console.log('📊 Total de despesas do usuário:', expenses.length);
+    console.log('Primeiras 2 despesas:', JSON.stringify(expenses.slice(0, 2)));
+
+    // Filtro opcional por categoria (feito em memória para evitar problema de índice)
+    if (categoryId && categoryId !== 'null') {
+      console.log('🔍 Filtrando por categoria:', categoryId);
+      expenses = expenses.filter(expense => {
+        console.log('  Comparando:', expense.categoryId, '===', categoryId, '?', expense.categoryId === categoryId);
+        return expense.categoryId === categoryId;
+      });
+      console.log('📊 Despesas após filtro:', expenses.length);
+    }
+
+    console.log('Mapeando para incluir categoria...');
     // Buscar informações das categorias
     const expensesWithCategory = await Promise.all(
       expenses.map(async (expense) => {
@@ -113,6 +137,8 @@ const getExpenses = async (req, res) => {
     const total = expenses.reduce((sum, expense) => sum + expense.value, 0);
     const totalRounded = Number(total.toFixed(2));
 
+    console.log('✅ Retornando', expensesWithCategory.length, 'despesas com total:', totalRounded);
+    console.log('========== FIM GETEXPENSES ==========');
 
     res.status(200).json({
       success: true,
@@ -121,7 +147,10 @@ const getExpenses = async (req, res) => {
       data: expensesWithCategory
     });
   } catch (error) {
-    console.error('Erro ao buscar gastos:', error);
+    console.error('========== ERRO GETEXPENSES ==========');
+    console.error('❌ Erro:', error.message);
+    console.error('Stack:', error.stack);
+    console.error('========== FIM ERRO ==========');
     res.status(500).json({
       success: false,
       message: 'Erro ao buscar gastos',

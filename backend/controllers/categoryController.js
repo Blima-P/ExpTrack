@@ -1,9 +1,9 @@
 const { db } = require('../config/firebaseAdmin');
 const { collectionToArray, getCurrentTimestamp } = require('../utils/firestoreHelpers');
 
-// Validação simples de cor HEX
+// Validação de cor HEX (3, 6 ou 8 dígitos)
 const isValidHexColor = (color) =>
-  /^#([0-9A-F]{3}){1,2}$/i.test(color);
+  /^#([0-9A-F]{3}|[0-9A-F]{6}|[0-9A-F]{8})$/i.test(color);
 
 /**
  * Criar nova categoria
@@ -208,7 +208,7 @@ const updateCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = req.user.uid;
+    const userId = req.userId;
 
     const categoryRef = db.collection('categories').doc(id);
     const categoryDoc = await categoryRef.get();

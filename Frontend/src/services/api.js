@@ -51,8 +51,13 @@ export const categoryService = {
 
 // Expense Service
 export const expenseService = {
-  getExpenses: (categoryId = null) =>
-    api.get('/expenses', { params: { categoryId } }),
+  getExpenses: (categoryId = null) => {
+    const params = {};
+    if (categoryId) {
+      params.categoryId = categoryId;
+    }
+    return api.get('/expenses', { params });
+  },
   createExpense: (value, description, categoryId) =>
     api.post('/expenses', { value, description, categoryId }),
   updateExpense: (id, value, description, categoryId) =>

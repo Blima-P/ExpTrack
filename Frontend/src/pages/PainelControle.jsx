@@ -5,6 +5,7 @@ import Navbar from '../components/BarraNavegacao';
 import ExpenseList from '../components/ListaDespesas';
 import ExpenseForm from '../components/FormularioDespesa';
 import CategoryManager from '../components/GerenciadorCategorias';
+import GraficoGastos from '../components/GraficoGastos';
 import { IconeAviso, IconeMais, IconeX, IconeRelogio, IconeCelebrar, IconeDinheiro, IconeGrafico, IconeEtiqueta } from '../components/Icones';
 
 export default function Dashboard() {
@@ -23,17 +24,21 @@ export default function Dashboard() {
     setError('');
 
     try {
+      console.log('📥 Carregando despesas com filtro:', selectedCategory);
       const [expensesRes, categoriesRes] = await Promise.all([
         expenseService.getExpenses(selectedCategory),
         categoryService.getCategories(),
       ]);
 
+      console.log('✅ Resposta do servidor:', expensesRes.data);
+      console.log('📊 Despesas recebidas:', expensesRes.data.data);
+      
       setExpenses(expensesRes.data.data || []);
       setTotal(expensesRes.data.total || 0);
       setCategories(categoriesRes.data.data || []);
     } catch (err) {
       setError('Erro ao carregar dados');
-      console.error(err);
+      console.error('❌ Erro ao carregar:', err);
     } finally {
       setLoading(false);
     }
@@ -194,6 +199,13 @@ export default function Dashboard() {
                 </button>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Chart */}
+        {!loading && expenses.length > 0 && (
+          <div className="mb-12">
+            <GraficoGastos expenses={expenses} categories={categories} />
           </div>
         )}
 
