@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+console.log('API URL configurada:', API_URL);
 
 const api = axios.create({
   baseURL: API_URL,
@@ -49,8 +51,13 @@ export const categoryService = {
 
 // Expense Service
 export const expenseService = {
-  getExpenses: (categoryId = null) =>
-    api.get('/expenses', { params: { categoryId } }),
+  getExpenses: (categoryId = null) => {
+    const params = {};
+    if (categoryId) {
+      params.categoryId = categoryId;
+    }
+    return api.get('/expenses', { params });
+  },
   createExpense: (value, description, categoryId) =>
     api.post('/expenses', { value, description, categoryId }),
   updateExpense: (id, value, description, categoryId) =>
