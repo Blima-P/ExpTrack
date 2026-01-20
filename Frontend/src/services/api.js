@@ -59,9 +59,9 @@ export const expenseService = {
     return api.get('/expenses', { params });
   },
   createExpense: (value, description, categoryId) =>
-    api.post('/expenses', { value, description, categoryId }),
+    api.post('/expenses', { amount: value, description, categoryId }),
   updateExpense: (id, value, description, categoryId) =>
-    api.put(`/expenses/${id}`, { value, description, categoryId }),
+    api.put(`/expenses/${id}`, { amount: value, description, categoryId }),
   deleteExpense: (id) =>
     api.delete(`/expenses/${id}`),
 };

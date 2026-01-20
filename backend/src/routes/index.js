@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Importar rotas
+const authRoutes = require('./auth.routes');
 const userRoutes = require('./user.routes');
 const categoryRoutes = require('./category.routes');
 const expenseRoutes = require('./expense.routes');
@@ -57,6 +58,7 @@ router.get('/', (req, res) => {
 });
 
 // Aplicar rotas com prefixos
+router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/categories', categoryRoutes);
 router.use('/expenses', expenseRoutes);

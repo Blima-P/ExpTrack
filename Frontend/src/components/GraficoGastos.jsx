@@ -65,7 +65,7 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
       return {
         id: e.id,
         description: e.description,
-        value: e.value,
+        value: e.amount || e.value,
         categoryId: e.categoryId,
         categoryName: cat.name,
         color: cat.color || '#003D7A',
@@ -81,7 +81,7 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
       const cat = categoryMap.get(e.categoryId) || {};
       const key = e.categoryId || 'sem-categoria';
       const current = acc.get(key) || { name: cat.name || 'Sem categoria', value: 0, color: cat.color || '#9CA3AF' };
-      current.value += Number(e.value || 0);
+      current.value += Number(e.amount || e.value || 0);
       acc.set(key, current);
     });
     return Array.from(acc.values());

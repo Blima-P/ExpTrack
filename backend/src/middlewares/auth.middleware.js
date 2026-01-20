@@ -1,4 +1,7 @@
+const jwt = require("jsonwebtoken");
 const { auth } = require("../config/firebase.admin");
+
+const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
 
 /**
  * Middleware para validar token JWT do Firebase
@@ -35,14 +38,20 @@ async function authMiddleware(req, res, next) {
       });
     }
 
-    // 2. Validar token com Firebase Admin
-    const decodedToken = await auth.verifyIdToken(token);
+    let decodedToken;
 
-    // 3. Anexar dados do usuário ao request
-    req.userId = decodedToken.uid; // UID do Firebase
-    req.userEmail = decodedToken.email; // Email do usuário
+    // 2. Tentar validar JWT próprio primeiro (mais simples para o frontend)
+    try {
+      decodedToken = jwt.verify(token, JWT_SECRET);
+    } catch (jwtError) {
+      // 3. Se falhar, tenta validar como ID Token do Firebase
+      decodedToken = await auth.verifyIdToken(token);
+    }
 
-    // Informações extras (opcional)
+    // 4. Anexar dados do usuário ao request
+    req.userId = decodedToken.uid;
+    req.userEmail = decodedToken.email;
+
     req.user = {
       uid: decodedToken.uid,
       email: decodedToken.email,
@@ -54,7 +63,7 @@ async function authMiddleware(req, res, next) {
       console.log(`🔐 Usuário autenticado: ${req.userEmail} (${req.userId})`);
     }
 
-    // 4. Continuar para o próximo middleware/controller
+    // 5. Continuar para o próximo middleware/controller
     next();
   } catch (error) {
     console.error("❌ Erro na autenticação:", error.message);

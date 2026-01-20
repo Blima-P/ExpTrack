@@ -1,4 +1,5 @@
 // src/controllers/category.controller.js
+const { db } = require('../config/firebase.admin');
 const {
     getUserDocuments,
     createUserDocument,

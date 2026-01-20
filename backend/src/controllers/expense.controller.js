@@ -1,4 +1,5 @@
 // src/controllers/expense.controller.js
+const { db } = require('../config/firebase.admin');
 const {
     getUserDocuments,
     createUserDocument,
@@ -43,11 +44,16 @@ const {
         expenses = expenses.slice(0, parseInt(limit));
       }
   
-      return successResponse(
-        res,
-        expenses,
-        `${expenses.length} despesa(s) encontrada(s)`
-      );
+      // Calcular total
+      const total = expenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+  
+      return res.json({
+        success: true,
+        data: expenses,
+        total: total,
+        count: expenses.length,
+        message: `${expenses.length} despesa(s) encontrada(s)`
+      });
     } catch (error) {
       next(error);
     }

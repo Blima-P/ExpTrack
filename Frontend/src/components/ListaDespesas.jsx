@@ -35,7 +35,7 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
   const handleEditStart = (expense) => {
     setEditingId(expense.id);
     setEditForm({
-      value: expense.value,
+      value: expense.amount || expense.value,
       description: expense.description,
       categoryId: expense.categoryId,
     });
@@ -132,7 +132,7 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                     </p>
                     <p className="text-sm text-gray-500 mt-1">
                       {getCategoryName(expense.categoryId)} •{' '}
-                      {new Date(expense.createdAt?.seconds * 1000).toLocaleDateString('pt-BR')}
+                      {new Date(expense.date || new Date()).toLocaleDateString('pt-BR')}
                     </p>
                   </div>
                 </div>
@@ -140,7 +140,7 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
 
               <div className="text-right mr-6">
                 <p className="text-2xl font-bold text-gray-900">
-                  R$ {expense.value.toFixed(2).replace('.', ',')}
+                  R$ {(expense.amount || expense.value || 0).toFixed(2).replace('.', ',')}
                 </p>
               </div>
 
