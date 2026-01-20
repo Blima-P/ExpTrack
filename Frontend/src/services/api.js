@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -27,10 +29,51 @@ api.interceptors.request.use(
 
 // Auth Service
 export const authService = {
-  register: (email, password, name) =>
-    api.post('/auth/register', { email, password, name }),
-  login: (email, password) =>
-    api.post('/auth/login', { email, password }),
+  register: async (email, password, name) => {
+    try {
+      // 1. Criar usuário no Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      
+      // 2. Atualizar perfil com nome
+      await updateProfile(userCredential.user, { displayName: name });
+      
+      // 3. Obter ID token
+      const idToken = await userCredential.user.getIdToken();
+      
+      // 4. Registrar no backend (Firestore)
+      const response = await api.post('/auth/register', { email, password, name, idToken });
+      return response;
+    } catch (error) {
+      // Tratar erros específicos do Firebase
+      if (error.code === 'auth/email-already-in-use') {
+        throw new Error('Este email já está em uso');
+      } else if (error.code === 'auth/weak-password') {
+        throw new Error('A senha deve ter pelo menos 6 caracteres');
+      } else if (error.code === 'auth/invalid-email') {
+        throw new Error('Email inválido');
+      }
+      throw error;
+    }
+  },
+  login: async (email, password) => {
+    try {
+      // 1. Autenticar com Firebase (valida senha)
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      // 2. Obter ID token do Firebase
+      const idToken = await userCredential.user.getIdToken();
+      
+      // 3. Enviar idToken para backend validar e gerar JWT customizado
+      const response = await api.post('/auth/login', { email, idToken });
+      return response;
+    } catch (error) {
+      // Firebase retorna erros específicos de autenticação
+      if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+        throw new Error('Email ou senha inválidos');
+      }
+      throw error;
+    }
+  },
   getMe: () =>
     api.get('/auth/me'),
   resetPassword: (email) =>

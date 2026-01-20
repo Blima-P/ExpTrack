@@ -86,7 +86,7 @@ export default function ColorPicker({ value, onChange }) {
           </div>
 
           {/* Custom color input */}
-          <div className="border-t border-gray-200 pt-4">
+          <div className="border-t border-slate-800 pt-4">
             <label className="block text-xs font-semibold text-gray-700 mb-2">Cor personalizada</label>
             <div className="flex gap-2">
               <input

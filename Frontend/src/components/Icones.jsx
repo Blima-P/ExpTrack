@@ -135,3 +135,55 @@ export const IconeCanto = ({ size = 24, cor = "currentColor" }) => (
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
   </svg>
 );
+
+export const IconeCategorias = ({ size = 24, cor = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={cor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2a3 3 0 0 0-3 3v1H6a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1v2h3v-2h1a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2h-1V5a3 3 0 0 0-3-3z" />
+    <path d="M17 8a2 2 0 0 1 2-2h1v2h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1v-2h-1v2h-3v-2h1a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2z" />
+  </svg>
+);
+
+export const IconeVerificacao = ({ size = 24, cor = "#22C55E" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={cor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+export const IconeCancelar = ({ size = 24, cor = "#EF4444" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={cor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="15" y1="9" x2="9" y2="15" />
+    <line x1="9" y1="9" x2="15" y2="15" />
+  </svg>
+);
+
+export const IconeCarteira = ({ size = 24, cor = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={cor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
+    <line x1="3" y1="8" x2="21" y2="8" />
+    <circle cx="17" cy="15" r="2" />
+  </svg>
+);
+
+export const LogoExpTrack = ({ size = 48 }) => (
+  <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Círculo externo azul */}
+    <circle cx="50" cy="50" r="40" stroke="#003D7A" strokeWidth="5" fill="none" />
+    
+    {/* Arco verde superior direito */}
+    <path d="M 73 32 A 40 40 0 0 1 78 50" stroke="#7EC850" strokeWidth="5" fill="none" strokeLinecap="round" />
+    
+    {/* Seta crescente verde atravessando */}
+    <g>
+      <line x1="30" y1="65" x2="65" y2="30" stroke="#7EC850" strokeWidth="4" strokeLinecap="round" />
+      <polyline points="65,30 55,33 58,43" fill="#7EC850" stroke="#7EC850" strokeWidth="1" strokeLinejoin="round" />
+    </g>
+    
+    {/* Três barras de gráfico em verde */}
+    <g>
+      <rect x="25" y="58" width="6" height="12" fill="#7EC850" rx="1" />
+      <rect x="35" y="52" width="6" height="18" fill="#7EC850" rx="1" />
+      <rect x="45" y="44" width="6" height="26" fill="#7EC850" rx="1" />
+    </g>
+  </svg>
+);

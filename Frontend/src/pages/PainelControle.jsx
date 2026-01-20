@@ -6,7 +6,7 @@ import ExpenseList from '../components/ListaDespesas';
 import ExpenseForm from '../components/FormularioDespesa';
 import CategoryManager from '../components/GerenciadorCategorias';
 import GraficoGastos from '../components/GraficoGastos';
-import { IconeAviso, IconeMais, IconeX, IconeRelogio, IconeCelebrar, IconeDinheiro, IconeGrafico, IconeEtiqueta } from '../components/Icones';
+import { IconeAviso, IconeMais, IconeX, IconeRelogio, IconeCelebrar, IconeDinheiro, IconeGrafico, IconeEtiqueta, IconeCategorias } from '../components/Icones';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -63,16 +63,16 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-950">
       <Navbar />
 
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-gradient-to-r from-indigo-950 to-slate-900 border-b border-indigo-800">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-          <h1 className="text-5xl font-bold text-gray-900 tracking-tight mb-2">
+          <h1 className="text-5xl font-bold text-white tracking-tight mb-2">
             Bem-vindo, {user?.name}! 👋
           </h1>
-          <p className="text-xl text-gray-600 font-light">
+          <p className="text-xl text-indigo-200 font-light">
             Gerencie seus gastos com elegância e simplicidade
           </p>
         </div>
@@ -81,9 +81,9 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl mb-8 animate-fade-in">
+          <div className="bg-red-900 border border-red-700 text-red-100 px-6 py-4 rounded-2xl mb-8 animate-fade-in">
             <div className="flex items-center gap-3">
-              <IconeAviso size={20} cor="#EF4444" />
+              <IconeAviso size={20} cor="#FCA5A5" />
               {error}
             </div>
           </div>
@@ -91,10 +91,10 @@ export default function Dashboard() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div className="card bg-gradient-to-br from-blue-900 to-blue-700 text-white p-8">
+          <div className="card bg-gradient-to-br from-indigo-900 to-indigo-800 text-white p-8">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100 font-light">Total de Gastos</p>
+                <p className="text-indigo-100 font-light">Total de Gastos</p>
                 <p className="text-4xl font-bold mt-3 tracking-tight">
                   R$ {total.toFixed(2).replace('.', ',')}
                 </p>
@@ -103,10 +103,10 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="card bg-gradient-to-br from-gray-800 to-gray-700 text-white p-8">
+          <div className="card bg-gradient-to-br from-violet-900 to-violet-800 text-white p-8">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-300 font-light">Número de Gastos</p>
+                <p className="text-violet-100 font-light">Número de Gastos</p>
                 <p className="text-4xl font-bold mt-3 tracking-tight">
                   {expenses.length}
                 </p>
@@ -115,10 +115,10 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="card bg-gradient-to-br from-gray-700 to-gray-600 text-white p-8">
+          <div className="card bg-gradient-to-br from-purple-900 to-purple-800 text-white p-8">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-300 font-light">Categorias</p>
+                <p className="text-purple-100 font-light">Categorias</p>
                 <p className="text-4xl font-bold mt-3 tracking-tight">
                   {categories.length}
                 </p>
@@ -140,7 +140,7 @@ export default function Dashboard() {
             onClick={() => setShowCategoryManager(!showCategoryManager)}
             className="btn-secondary flex items-center gap-3"
           >
-            {showCategoryManager ? <><IconeX size={20} /> Cancelar</> : <>🏷️ Gerenciar Categorias</>}
+            {showCategoryManager ? <><IconeX size={20} /> Cancelar</> : <><IconeCategorias size={20} /> Gerenciar Categorias</>}
           </button>
         </div>
 
@@ -167,14 +167,14 @@ export default function Dashboard() {
         {/* Category Filter */}
         {categories.length > 0 && (
           <div className="mb-10">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">Filtrar por Categoria</h3>
+            <h3 className="text-lg font-semibold text-white mb-6">Filtrar por Categoria</h3>
             <div className="flex gap-3 flex-wrap">
               <button
                 onClick={() => setSelectedCategory(null)}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
                   selectedCategory === null
-                    ? 'bg-blue-900 text-white shadow-md'
-                    : 'bg-white text-gray-900 hover:bg-gray-100 border border-gray-200'
+                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/50'
+                    : 'bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700'
                 }`}
               >
                 Todas
@@ -185,14 +185,14 @@ export default function Dashboard() {
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
                     selectedCategory === cat.id
-                      ? 'text-white shadow-md'
+                      ? 'text-white shadow-md shadow-indigo-500/50'
                       : 'hover:opacity-80 border-2'
                   }`}
                   style={{
                     backgroundColor:
-                      selectedCategory === cat.id ? cat.color : 'white',
+                      selectedCategory === cat.id ? cat.color : '#334155',
                     borderColor: cat.color,
-                    color: selectedCategory === cat.id ? '#fff' : cat.color,
+                    color: selectedCategory === cat.id ? '#fff' : '#CBD5E1',
                   }}
                 >
                   {cat.name}
@@ -212,13 +212,13 @@ export default function Dashboard() {
         {/* Expense List */}
         {loading ? (
           <div className="text-center py-20">
-            <div className="inline-block mb-4"><IconeRelogio size={40} /></div>
-            <p className="text-gray-500 text-lg font-light">Carregando gastos...</p>
+            <div className="inline-block mb-4"><IconeRelogio size={40} cor="#9CA3AF" /></div>
+            <p className="text-gray-400 text-lg font-light">Carregando gastos...</p>
           </div>
         ) : expenses.length === 0 ? (
           <div className="card text-center py-20">
-            <div className="inline-block mb-6"><IconeCelebrar size={48} /></div>
-            <p className="text-gray-600 text-lg font-light">
+            <div className="inline-block mb-6"><IconeCelebrar size={48} cor="#9CA3AF" /></div>
+            <p className="text-gray-400 text-lg font-light">
               {selectedCategory
                 ? 'Nenhum gasto nesta categoria'
                 : 'Nenhum gasto registrado. Comece adicionando um novo!'}

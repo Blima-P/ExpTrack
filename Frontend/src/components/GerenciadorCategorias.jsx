@@ -54,27 +54,27 @@ export default function CategoryManager({ categories, onCategoryCreated }) {
   };
 
   return (
-    <div className="card bg-white border border-gray-200 p-8 max-w-3xl">
-      <h3 className="text-2xl font-bold text-gray-900 mb-8">Gerenciar Categorias</h3>
+    <div className="card bg-slate-900 border border-slate-800 p-8 max-w-3xl shadow-2xl shadow-indigo-500/20">
+      <h3 className="text-2xl font-bold text-white mb-8">Gerenciar Categorias</h3>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-xl mb-6 flex items-center gap-3">
-          <IconeAviso size={20} cor="#EF4444" />
+        <div className="bg-red-950 border border-red-800 text-red-100 px-6 py-4 rounded-xl mb-6 flex items-center gap-3">
+          <IconeAviso size={20} cor="#FCA5A5" />
           <p className="font-medium">{error}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 mb-10 pb-10 border-b border-gray-200">
+      <form onSubmit={handleSubmit} className="space-y-6 mb-10 pb-10 border-b border-slate-800">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-3">
+            <label className="block text-sm font-semibold text-white mb-3">
               Nome da Categoria
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 border border-slate-700 bg-slate-800 text-white placeholder-slate-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
               placeholder="Ex: Alimentação"
               required
             />

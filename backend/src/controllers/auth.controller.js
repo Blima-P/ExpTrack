@@ -70,20 +70,56 @@ async function register(req, res, next) {
 /**
  * POST /api/auth/login
  * Faz login do usuário
+ * NOTA: O Firebase Admin SDK não valida senhas.
+ * Para validação de senha, o cliente deve usar o Firebase Client SDK
+ * ou enviar um ID token já validado pelo Firebase Authentication.
  */
 async function login(req, res, next) {
   try {
-    const { email, password } = req.body;
+    const { email, password, idToken } = req.body;
 
     // Validações
-    if (!email || !password) {
-      return errorResponse(res, 'Email e senha são obrigatórios', 400);
+    if (!email) {
+      return errorResponse(res, 'Email é obrigatório', 400);
     }
 
-    // Buscar usuário por email
+    // Se recebeu idToken do Firebase Client, validar ele
+    if (idToken) {
+      try {
+        const decodedToken = await auth.verifyIdToken(idToken);
+        
+        // Buscar dados do usuário no Firestore
+        const userDoc = await db.collection('users').doc(decodedToken.uid).get();
+        const userData = userDoc.exists ? userDoc.data() : {};
+
+        // Gerar token JWT próprio
+        const token = jwt.sign(
+          { uid: decodedToken.uid, email: decodedToken.email, name: userData.name || decodedToken.name },
+          JWT_SECRET,
+          { expiresIn: '7d' }
+        );
+
+        return successResponse(res, {
+          uid: decodedToken.uid,
+          email: decodedToken.email,
+          name: userData.name || decodedToken.name,
+          token,
+        });
+      } catch (error) {
+        return errorResponse(res, 'Token inválido', 401);
+      }
+    }
+
+    // Se não tem idToken, assume que o cliente já fez a autenticação via Firebase Client
+    // e só precisa de um JWT do nosso servidor
+    if (!password) {
+      return errorResponse(res, 'Senha ou idToken são obrigatórios', 400);
+    }
+
+    // Buscar usuário por email (sem validar senha - isso é feito no cliente)
     const userRecord = await auth.getUserByEmail(email);
 
-    // Buscar dados do usuário no Firestore (antes de gerar o token para ter o nome)
+    // Buscar dados do usuário no Firestore
     const userDoc = await db.collection('users').doc(userRecord.uid).get();
     const userData = userDoc.exists ? userDoc.data() : {};
 
@@ -102,7 +138,7 @@ async function login(req, res, next) {
     });
   } catch (error) {
     if (error.code === 'auth/user-not-found') {
-      return errorResponse(res, 'Usuário não encontrado', 401);
+      return errorResponse(res, 'Email ou senha inválidos', 401);
     }
     next(error);
   }

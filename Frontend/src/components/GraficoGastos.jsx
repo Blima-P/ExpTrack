@@ -22,9 +22,9 @@ function CustomTooltip({ active, payload, label }) {
     const p = payload[0];
     const item = p.payload;
     return (
-      <div className="rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-md">
-        <div className="font-semibold text-gray-900 mb-1">{item.description || label}</div>
-        <div className="text-sm text-gray-700">
+      <div className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 shadow-md">
+        <div className="font-semibold text-white mb-1">{item.description || label}</div>
+        <div className="text-sm text-slate-200">
           <div>Valor: <span className="font-semibold">{formatCurrency(item.value)}</span></div>
           {item.categoryName && (
             <div className="flex items-center gap-2 mt-1">
@@ -36,7 +36,7 @@ function CustomTooltip({ active, payload, label }) {
             </div>
           )}
           {item.dateLabel && (
-            <div className="mt-1 text-gray-500">{item.dateLabel}</div>
+            <div className="mt-1 text-gray-400">{item.dateLabel}</div>
           )}
         </div>
       </div>
@@ -90,17 +90,17 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
   const hasData = (modo === 'por-despesa' ? dataPorDespesa.length : dataPorCategoria.length) > 0;
 
   return (
-    <div className="card bg-white border border-gray-200 p-8">
+    <div className="card bg-slate-900 border border-slate-800 p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-2xl font-bold text-gray-900">Visão de Gastos</h3>
-          <p className="text-gray-600 font-light">Interativo, responsivo e com cores por categoria</p>
+          <h3 className="text-2xl font-bold text-white">Visão de Gastos</h3>
+          <p className="text-slate-300 font-light">Interativo, responsivo e com cores por categoria</p>
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => setModo('por-despesa')}
             className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-              modo === 'por-despesa' ? 'bg-blue-900 text-white shadow-md' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+              modo === 'por-despesa' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/50' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
             }`}
           >
             Por despesa
@@ -108,7 +108,7 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
           <button
             onClick={() => setModo('por-categoria')}
             className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-              modo === 'por-categoria' ? 'bg-blue-900 text-white shadow-md' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+              modo === 'por-categoria' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/50' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
             }`}
           >
             Por categoria
@@ -118,17 +118,17 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
 
       {!hasData ? (
         <div className="text-center py-16">
-          <p className="text-gray-500 text-lg font-light">Nenhum dado para exibir ainda</p>
+          <p className="text-gray-400 text-lg font-light">Nenhum dado para exibir ainda</p>
         </div>
       ) : modo === 'por-despesa' ? (
         <div className="w-full" style={{ height: 360 }}>
           <ResponsiveContainer>
             <BarChart data={dataPorDespesa} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-              <XAxis dataKey="description" tick={{ fill: '#6B7280' }} hide={dataPorDespesa.length > 8} />
-              <YAxis tickFormatter={(v) => `R$ ${v}`} tick={{ fill: '#6B7280' }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
+              <XAxis dataKey="description" tick={{ fill: '#E2E8F0' }} hide={dataPorDespesa.length > 8} />
+              <YAxis tickFormatter={(v) => `R$ ${v}`} tick={{ fill: '#E2E8F0' }} />
               <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ color: '#374151' }} />
+              <Legend wrapperStyle={{ color: '#F1F5F9' }} />
               <Bar dataKey="value" name="Valor do gasto" radius={[8, 8, 0, 0]}>
                 {dataPorDespesa.map((item) => (
                   <Cell key={`cell-${item.id}`} fill={item.color} />
@@ -165,7 +165,7 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
       {/* Legenda customizada (mostra cores das categorias) */}
       {modo === 'por-despesa' && categories.length > 0 && (
         <div className="mt-6">
-          <h4 className="text-sm font-semibold text-gray-900 mb-3">Categorias</h4>
+          <h4 className="text-sm font-semibold text-white mb-3">Categorias</h4>
           <div className="flex flex-wrap gap-3">
             {categories.map((cat) => (
               <div key={cat.id} className="flex items-center gap-2">
@@ -173,7 +173,7 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
                   className="inline-block w-3.5 h-3.5 rounded-full"
                   style={{ backgroundColor: cat.color || '#9CA3AF' }}
                 />
-                <span className="text-sm text-gray-700">{cat.name}</span>
+                <span className="text-sm text-gray-300">{cat.name}</span>
               </div>
             ))}
           </div>

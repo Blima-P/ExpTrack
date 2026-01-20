@@ -11,7 +11,21 @@ const config = {
 
   // CORS
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: (origin, callback) => {
+      // Permitir requisições sem origin (ex: Postman) ou de localhost nas portas 3000, 5173, 5174, 5175
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'http://localhost:5174',
+        'http://localhost:5175',
+      ];
+      
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Origem não permitida pelo CORS'));
+      }
+    },
     credentials: true,
     optionsSuccessStatus: 200,
   },

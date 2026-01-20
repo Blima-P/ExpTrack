@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/ContextoAutenticacao';
-import { IconeUsuario, IconeSaida } from './Icones';
+import { IconeUsuario, IconeSaida, LogoExpTrack } from './Icones';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -17,9 +17,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-900 to-blue-700 rounded-2xl flex items-center justify-center shadow-md">
-              <span className="text-xl">💰</span>
-            </div>
+            <LogoExpTrack size={40} />
             <h1 className="text-2xl font-bold text-gray-900 tracking-tight">ExpTrack</h1>
           </div>
 
@@ -31,8 +29,8 @@ export default function Navbar() {
                 <div className="flex items-center gap-3">
                   <IconeUsuario size={20} cor="#003D7A" />
                   <div>
-                    <p className="font-semibold text-gray-900 text-sm">{user.name}</p>
-                    <p className="text-xs text-gray-500">{user.email}</p>
+                    <p className="font-semibold text-white text-sm">{user.name}</p>
+                    <p className="text-xs text-slate-400">{user.email}</p>
                   </div>
                 </div>
               </div>
@@ -40,7 +38,7 @@ export default function Navbar() {
               {/* Logout Button */}
               <button
                 onClick={handleLogout}
-                className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold rounded-lg transition-all duration-300 text-sm flex items-center gap-2"
+                className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all duration-300 text-sm flex items-center gap-2"
               >
                 <IconeSaida size={18} cor="currentColor" />
                 Sair

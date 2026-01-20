@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { expenseService } from '../services/api';
-import { IconeEditar, IconeLixeira, IconeCarregando } from './Icones';
+import { IconeEditar, IconeLixeira, IconeCarregando, IconeVerificacao, IconeCancelar } from './Icones';
 
 export default function ExpenseList({ expenses, categories, onExpenseDeleted }) {
   const [deletingId, setDeletingId] = useState(null);
@@ -67,7 +67,7 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
       {expenses.map((expense) => (
         <div
           key={expense.id}
-          className="card bg-white border border-gray-200 p-6 hover:shadow-lg transition-all duration-300"
+          className="card bg-slate-900 border border-slate-800 p-6 hover:shadow-lg hover:shadow-indigo-500/20 transition-all duration-300"
         >
           {editingId === expense.id ? (
             // Edit Mode
@@ -107,13 +107,13 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                   onClick={() => handleEditSubmit(expense.id)}
                   className="btn-primary flex-1 flex items-center justify-center gap-2"
                 >
-                  ✅ Salvar
+                  <IconeVerificacao size={16} cor="white" /> Salvar
                 </button>
                 <button
                   onClick={handleEditCancel}
                   className="btn-secondary flex-1 flex items-center justify-center gap-2"
                 >
-                  ❌ Cancelar
+                  <IconeCancelar size={16} cor="white" /> Cancelar
                 </button>
               </div>
             </div>
@@ -127,10 +127,10 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                     style={{ backgroundColor: getCategoryColor(expense.categoryId) }}
                   ></div>
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-900 text-lg">
+                    <p className="font-semibold text-white text-lg">
                       {expense.description}
                     </p>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-gray-400 mt-1">
                       {getCategoryName(expense.categoryId)} •{' '}
                       {new Date(expense.date || new Date()).toLocaleDateString('pt-BR')}
                     </p>
@@ -139,7 +139,7 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
               </div>
 
               <div className="text-right mr-6">
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-white">
                   R$ {(expense.amount || expense.value || 0).toFixed(2).replace('.', ',')}
                 </p>
               </div>
