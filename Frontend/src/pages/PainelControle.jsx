@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/ContextoAutenticacao';
 import { expenseService, categoryService } from '../services/api';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import Navbar from '../components/BarraNavegacao';
 import ExpenseList from '../components/ListaDespesas';
 import ExpenseForm from '../components/FormularioDespesa';
@@ -66,16 +67,132 @@ export default function Dashboard() {
     <div className="min-h-screen bg-slate-950">
       <Navbar />
 
-      {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-950 to-slate-900 border-b border-indigo-800">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-          <h1 className="text-5xl font-bold text-white tracking-tight mb-2">
-            Bem-vindo, {user?.name}! 👋
-          </h1>
-          <p className="text-xl text-indigo-200 font-light">
-            Gerencie seus gastos com elegância e simplicidade
-          </p>
+      {/* Header Hero */}
+      <div className="bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 border-b border-indigo-800/50 shadow-2xl shadow-indigo-900/30 relative overflow-hidden" style={{ fontFamily: '"Space Grotesk", "Inter", sans-serif' }}>
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl -mr-32 -mt-32 animate-pulse"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl -ml-32 -mb-32 animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
+
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 relative z-10">
+          <div className="flex items-center justify-between gap-8 flex-wrap">
+            {/* Text Content */}
+            <div className="flex-1 min-w-[300px]">
+              <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-600/20 border border-indigo-500/40">
+                <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                <span className="text-sm font-semibold text-indigo-300">Bem-vindo ao ExpTrack</span>
+              </div>
+              <h1 
+                className="text-5xl lg:text-6xl font-black text-white tracking-tight mb-4 leading-tight"
+                style={{
+                  animation: 'slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both',
+                  backgroundImage: 'linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+              >
+                Bem-vindo, {user?.name}!
+              </h1>
+              <p 
+                className="text-lg text-indigo-200 font-light mb-8"
+                style={{
+                  animation: 'slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both'
+                }}
+              >
+                Gerencie seus gastos com elegância e simplicidade
+              </p>
+              <div 
+                className="flex items-center gap-4 text-sm"
+                style={{
+                  animation: 'slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s both'
+                }}
+              >
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/50 border border-slate-700">
+                  <span className="text-indigo-300">📊</span>
+                  <span className="text-slate-300">{expenses.length} despesas registradas</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/50 border border-slate-700">
+                  <span className="text-emerald-400">✨</span>
+                  <span className="text-slate-300">{categories.length} categorias</span>
+                </div>
+              </div>
+            </div>
+
+            {/* SVG Icon */}
+            <div 
+              className="flex-shrink-0 hidden lg:flex"
+              style={{
+                animation: 'float 3s ease-in-out infinite',
+                filter: 'drop-shadow(0 20px 25px rgba(99, 102, 241, 0.2))'
+              }}
+            >
+              <svg viewBox="-20 -20 240 240" width="240" height="240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Gradient defs */}
+                <defs>
+                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#6366f1" />
+                    <stop offset="100%" stopColor="#8b5cf6" />
+                  </linearGradient>
+                </defs>
+
+                {/* Outer circle */}
+                <circle cx="100" cy="100" r="95" stroke="url(#grad1)" strokeWidth="2" opacity="0.5" />
+                <circle cx="100" cy="100" r="90" stroke="url(#grad1)" strokeWidth="1" opacity="0.25" />
+
+                {/* Wallet shape */}
+                <rect x="50" y="70" width="100" height="70" rx="12" fill="url(#grad1)" opacity="0.8" />
+                <rect x="60" y="85" width="80" height="45" rx="8" fill="#0f172a" />
+
+                {/* Card line */}
+                <rect x="60" y="85" width="80" height="4" fill="url(#grad1)" opacity="0.6" />
+
+                {/* Dollar sign */}
+                <text x="100" y="125" fontSize="40" fontWeight="bold" fill="url(#grad1)" textAnchor="middle" dominantBaseline="central">
+                  $
+                </text>
+
+                {/* Animated circles around */}
+                <circle cx="100" cy="50" r="4" fill="#6366f1" opacity="0.6">
+                  <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" />
+                </circle>
+                <circle cx="150" cy="100" r="4" fill="#8b5cf6" opacity="0.6">
+                  <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" begin="0.5s" />
+                </circle>
+                <circle cx="100" cy="150" r="4" fill="#6366f1" opacity="0.6">
+                  <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" begin="1s" />
+                </circle>
+                <circle cx="50" cy="100" r="4" fill="#8b5cf6" opacity="0.6">
+                  <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" begin="1.5s" />
+                </circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* CSS for animations */}
+        <style>{`
+          @keyframes slideUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          @keyframes float {
+            0%, 100% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(-20px);
+            }
+          }
+        `}</style>
       </div>
 
       {/* Main Content */}
@@ -91,7 +208,7 @@ export default function Dashboard() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div className="card bg-gradient-to-br from-indigo-900 to-indigo-800 text-white p-8">
+          <div className="card bg-gradient-to-br from-indigo-900 to-indigo-800 text-white p-8 hover-lift hover-glow" data-scroll-animation="default" data-delay="1">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-indigo-100 font-light">Total de Gastos</p>
@@ -103,7 +220,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="card bg-gradient-to-br from-violet-900 to-violet-800 text-white p-8">
+          <div className="card bg-gradient-to-br from-violet-900 to-violet-800 text-white p-8 hover-lift hover-glow" data-scroll-animation="default" data-delay="2">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-violet-100 font-light">Número de Gastos</p>
@@ -115,7 +232,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="card bg-gradient-to-br from-purple-900 to-purple-800 text-white p-8">
+          <div className="card bg-gradient-to-br from-purple-900 to-purple-800 text-white p-8 hover-lift hover-glow" data-scroll-animation="default" data-delay="3">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-purple-100 font-light">Categorias</p>
@@ -203,8 +320,8 @@ export default function Dashboard() {
         )}
 
         {/* Chart */}
-        {!loading && expenses.length > 0 && (
-          <div className="mb-12">
+        {!loading && (
+          <div className="mb-12" data-scroll-animation="default">
             <GraficoGastos expenses={expenses} categories={categories} />
           </div>
         )}

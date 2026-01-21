@@ -1,0 +1,212 @@
+/* ============================================
+   SCROLL-DRIVEN ANIMATIONS (Intersection Observer)
+   Modern approach using data attributes
+   ============================================ */
+
+/* Base state - elements waiting for animation */
+[data-scroll-animation] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Active state - element visible in viewport */
+[data-scroll-animation].in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ANIMATION VARIANTS */
+
+/* Slide from left */
+[data-scroll-animation="slide-left"] {
+  transform: translateX(-50px);
+}
+
+[data-scroll-animation="slide-left"].in-view {
+  transform: translateX(0);
+}
+
+/* Slide from right */
+[data-scroll-animation="slide-right"] {
+  transform: translateX(50px);
+}
+
+[data-scroll-animation="slide-right"].in-view {
+  transform: translateX(0);
+}
+
+/* Scale up effect */
+[data-scroll-animation="scale"] {
+  transform: scale(0.95);
+}
+
+[data-scroll-animation="scale"].in-view {
+  transform: scale(1);
+}
+
+/* Fade only (no movement) */
+[data-scroll-animation="fade"] {
+  opacity: 0;
+  transform: none;
+}
+
+[data-scroll-animation="fade"].in-view {
+  opacity: 1;
+  transform: none;
+}
+
+/* Rotation effect */
+[data-scroll-animation="rotate"] {
+  opacity: 0;
+  transform: rotate(-5deg) scale(0.95);
+}
+
+[data-scroll-animation="rotate"].in-view {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+/* STAGGERED DELAYS */
+
+[data-delay="1"] {
+  transition-delay: 150ms;
+}
+
+[data-delay="2"] {
+  transition-delay: 300ms;
+}
+
+[data-delay="3"] {
+  transition-delay: 450ms;
+}
+
+[data-delay="4"] {
+  transition-delay: 600ms;
+}
+
+[data-delay="5"] {
+  transition-delay: 750ms;
+}
+
+[data-delay="6"] {
+  transition-delay: 900ms;
+}
+
+/* ============================================
+   HOVER EFFECTS
+   ============================================ */
+
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.hover-glow {
+  transition: box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.8),
+              0 0 60px rgba(139, 92, 246, 0.4);
+  filter: brightness(1.1);
+}
+
+.hover-scale {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* ============================================
+   CONTINUOUS ANIMATIONS
+   ============================================ */
+
+@keyframes floatUp {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-float {
+  animation: floatUp 4s ease-in-out infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.8));
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, rgba(99, 102, 241, 1), rgba(139, 92, 246, 1));
+  width: 14px;
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATION
+   ============================================ */
+
+/* Use will-change for smooth animations */
+[data-scroll-animation] {
+  will-change: opacity, transform;
+}
+
+[data-scroll-animation].in-view {
+  will-change: auto;
+}
+

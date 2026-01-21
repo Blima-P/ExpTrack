@@ -1,12 +1,25 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/ContextoAutenticacao';
 import ProtectedRoute from './components/RotaProtegida';
 import Login from './pages/Login';
 import Register from './pages/Registro';
 import Dashboard from './pages/PainelControle';
+import { initScrollAnimations } from './utils/initScrollAnimations';
 import './estilos-globais.css';
 
 function App() {
+  useEffect(() => {
+    // Initialize scroll animations on mount
+    const observer = initScrollAnimations();
+    window.scrollAnimationObserver = observer;
+
+    return () => {
+      // Cleanup observer on unmount
+      observer?.disconnect();
+    };
+  }, []);
+
   return (
     <AuthProvider>
       <Router>

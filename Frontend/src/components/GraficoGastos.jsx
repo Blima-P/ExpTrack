@@ -11,6 +11,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  LabelList,
 } from 'recharts';
 
 // Util: formata valores para BRL
@@ -47,6 +48,7 @@ function CustomTooltip({ active, payload, label }) {
 
 export default function GraficoGastos({ expenses = [], categories = [] }) {
   const [modo, setModo] = useState('por-despesa'); // 'por-despesa' | 'por-categoria'
+  const totalGeral = useMemo(() => expenses.reduce((acc, e) => acc + Number(e.amount || e.value || 0), 0), [expenses]);
 
   const categoryMap = useMemo(() => {
     const map = new Map();
@@ -90,11 +92,29 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
   const hasData = (modo === 'por-despesa' ? dataPorDespesa.length : dataPorCategoria.length) > 0;
 
   return (
-    <div className="card bg-slate-900 border border-slate-800 p-8">
-      <div className="flex items-center justify-between mb-6">
+    <div
+      className="card bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-slate-800 p-8 shadow-2xl shadow-indigo-900/30"
+      data-scroll-animation="default"
+      style={{ fontFamily: '"Space Grotesk", "Inter", sans-serif' }}
+    >
+      <div className="flex items-center justify-between mb-6 gap-6 flex-wrap">
         <div>
           <h3 className="text-2xl font-bold text-white">Visão de Gastos</h3>
           <p className="text-slate-300 font-light">Interativo, responsivo e com cores por categoria</p>
+          <div className="mt-3 flex items-center gap-3 text-sm text-slate-300">
+            <span className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1 border border-slate-700">
+              <span className="w-2 h-2 rounded-full bg-indigo-400" />
+              Total: <strong className="text-white">{formatCurrency(totalGeral)}</strong>
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1 border border-slate-700">
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              Gastos: <strong className="text-white">{expenses.length}</strong>
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-3 py-1 border border-slate-700">
+              <span className="w-2 h-2 rounded-full bg-amber-400" />
+              Categorias: <strong className="text-white">{categories.length}</strong>
+            </span>
+          </div>
         </div>
         <div className="flex gap-3">
           <button
@@ -117,17 +137,28 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
       </div>
 
       {!hasData ? (
-        <div className="text-center py-16">
+        <div className="text-center py-16" data-scroll-animation="fade">
           <p className="text-gray-400 text-lg font-light">Nenhum dado para exibir ainda</p>
         </div>
       ) : modo === 'por-despesa' ? (
-        <div className="w-full" style={{ height: 360 }}>
+        <div
+          className="w-full bg-slate-950/60 rounded-xl p-4 border border-slate-800 shadow-inner shadow-indigo-900/20"
+          style={{ height: 450 }}
+          data-scroll-animation="default"
+        >
           <ResponsiveContainer>
-            <BarChart data={dataPorDespesa} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
+            <BarChart data={dataPorDespesa} margin={{ top: 20, right: 20, left: 0, bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-              <XAxis dataKey="description" tick={{ fill: '#E2E8F0' }} hide={dataPorDespesa.length > 8} />
+              <XAxis 
+                dataKey="description" 
+                tick={{ fill: '#E2E8F0', fontSize: 12 }} 
+                angle={-45}
+                textAnchor="end"
+                height={100}
+                hide={dataPorDespesa.length > 8} 
+              />
               <YAxis tickFormatter={(v) => `R$ ${v}`} tick={{ fill: '#E2E8F0' }} />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(99,102,241,0.05)' }} />
               <Legend wrapperStyle={{ color: '#F1F5F9' }} />
               <Bar dataKey="value" name="Valor do gasto" radius={[8, 8, 0, 0]}>
                 {dataPorDespesa.map((item) => (
@@ -138,7 +169,11 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
           </ResponsiveContainer>
         </div>
       ) : (
-        <div className="w-full" style={{ height: 360 }}>
+        <div
+          className="w-full bg-slate-950/60 rounded-xl p-4 border border-slate-800 shadow-inner shadow-indigo-900/20"
+          style={{ height: 400 }}
+          data-scroll-animation="default"
+        >
           <ResponsiveContainer>
             <PieChart>
               <Pie
@@ -150,13 +185,15 @@ export default function GraficoGastos({ expenses = [], categories = [] }) {
                 outerRadius={140}
                 innerRadius={70}
                 paddingAngle={2}
+                label={({ name, percent }) => `${name} ${Math.round(percent * 100)}%`}
+                labelLine={false}
               >
                 {dataPorCategoria.map((entry, idx) => (
                   <Cell key={`slice-${idx}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip content={<CustomTooltip />} />
-              <Legend />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(99,102,241,0.05)' }} />
+              <Legend wrapperStyle={{ color: '#E2E8F0' }} />
             </PieChart>
           </ResponsiveContainer>
         </div>
