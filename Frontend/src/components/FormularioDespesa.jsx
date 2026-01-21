@@ -64,7 +64,7 @@ export default function ExpenseForm({ categories, onExpenseCreated }) {
       <h3 className="text-3xl font-black text-white mb-8 bg-gradient-to-r from-indigo-200 to-white bg-clip-text text-transparent">Novo Gasto</h3>
 
       {error && (
-        <div className="bg-red-950/40 border border-red-800/50 text-red-200 px-6 py-4 rounded-xl mb-6 flex items-center gap-3" data-scroll-animation="slide-left">
+        <div className="bg-amber-950/40 border border-amber-800/50 text-amber-200 px-6 py-4 rounded-xl mb-6 flex items-center gap-3" data-scroll-animation="slide-left">
           <IconeAviso size={20} cor="#FCA5A5" />
           <p className="font-medium">{error}</p>
         </div>

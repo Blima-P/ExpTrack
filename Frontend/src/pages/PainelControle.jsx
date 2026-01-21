@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/ContextoAutenticacao';
+import { useTheme } from '../context/ThemeContext';
 import { expenseService, categoryService } from '../services/api';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import Navbar from '../components/BarraNavegacao';
@@ -11,6 +12,7 @@ import { IconeAviso, IconeMais, IconeX, IconeRelogio, IconeCelebrar, IconeDinhei
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { theme, currentTheme } = useTheme();
   const [expenses, setExpenses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,11 +66,11 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className={`min-h-screen ${theme.colors.bgPrimary}`}>
       <Navbar />
 
       {/* Header Hero */}
-      <div className="bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 border-b border-indigo-800/50 shadow-2xl shadow-indigo-900/30 relative overflow-hidden" style={{ fontFamily: '"Space Grotesk", "Inter", sans-serif' }}>
+      <div className={`${theme.colors.bgSecondary} border-b ${theme.colors.borderNavbar} shadow-2xl ${theme.colors.shadowColor} relative overflow-hidden`} style={{ fontFamily: '"Space Grotesk", "Inter", sans-serif' }}>
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl -mr-32 -mt-32 animate-pulse"></div>
@@ -79,24 +81,20 @@ export default function Dashboard() {
           <div className="flex items-center justify-between gap-8 flex-wrap">
             {/* Text Content */}
             <div className="flex-1 min-w-[300px]">
-              <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-600/20 border border-indigo-500/40">
-                <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
-                <span className="text-sm font-semibold text-indigo-300">Bem-vindo ao ExpTrack</span>
+              <div className={`mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-full ${theme.colors.badgeBg} ${theme.colors.badgeBorder}`}>
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span className={`text-sm font-semibold ${theme.colors.textSecondary}`}>Bem-vindo ao ExpTrack</span>
               </div>
               <h1 
-                className="text-5xl lg:text-6xl font-black text-white tracking-tight mb-4 leading-tight"
+                className={`text-5xl lg:text-6xl font-black tracking-tight mb-4 leading-tight ${currentTheme === 'light' ? 'text-black' : theme.colors.textPrimary}`}
                 style={{
                   animation: 'slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both',
-                  backgroundImage: 'linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
                 }}
               >
                 Bem-vindo, {user?.name}!
               </h1>
               <p 
-                className="text-lg text-indigo-200 font-light mb-8"
+                className={`text-lg font-light mb-8 ${currentTheme === 'light' ? 'text-black' : theme.colors.textSecondary}`}
                 style={{
                   animation: 'slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both'
                 }}
@@ -109,13 +107,13 @@ export default function Dashboard() {
                   animation: 'slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s both'
                 }}
               >
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/50 border border-slate-700">
-                  <span className="text-indigo-300">📊</span>
-                  <span className="text-slate-300">{expenses.length} despesas registradas</span>
+                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${theme.colors.chipBg} ${theme.colors.chipBorder}`}>
+                  <span className={theme.colors.accentPrimary}>📊</span>
+                  <span className={theme.colors.textSecondary}>{expenses.length} despesas registradas</span>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/50 border border-slate-700">
+                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${theme.colors.chipBg} ${theme.colors.chipBorder}`}>
                   <span className="text-emerald-400">✨</span>
-                  <span className="text-slate-300">{categories.length} categorias</span>
+                  <span className={theme.colors.textSecondary}>{categories.length} categorias</span>
                 </div>
               </div>
             </div>
@@ -149,21 +147,21 @@ export default function Dashboard() {
                 <rect x="60" y="85" width="80" height="4" fill="url(#grad1)" opacity="0.6" />
 
                 {/* Dollar sign */}
-                <text x="100" y="125" fontSize="40" fontWeight="bold" fill="url(#grad1)" textAnchor="middle" dominantBaseline="central">
+                <text x="100" y="110" fontSize="36" fontWeight="bold" fill="url(#grad1)" textAnchor="middle" dominantBaseline="middle">
                   $
                 </text>
 
                 {/* Animated circles around */}
-                <circle cx="100" cy="50" r="4" fill="#6366f1" opacity="0.6">
+                <circle cx="100" cy="35" r="4" fill="#6366f1" opacity="0.6">
                   <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" />
                 </circle>
-                <circle cx="150" cy="100" r="4" fill="#8b5cf6" opacity="0.6">
+                <circle cx="165" cy="100" r="4" fill="#8b5cf6" opacity="0.6">
                   <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" begin="0.5s" />
                 </circle>
-                <circle cx="100" cy="150" r="4" fill="#6366f1" opacity="0.6">
+                <circle cx="100" cy="165" r="4" fill="#6366f1" opacity="0.6">
                   <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" begin="1s" />
                 </circle>
-                <circle cx="50" cy="100" r="4" fill="#8b5cf6" opacity="0.6">
+                <circle cx="35" cy="100" r="4" fill="#8b5cf6" opacity="0.6">
                   <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" begin="1.5s" />
                 </circle>
               </svg>
@@ -198,9 +196,13 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
         {error && (
-          <div className="bg-red-900 border border-red-700 text-red-100 px-6 py-4 rounded-2xl mb-8 animate-fade-in">
+          <div className={`border px-6 py-4 rounded-2xl mb-8 animate-fade-in flex items-center gap-3 ${
+            currentTheme === 'light'
+              ? 'bg-amber-50 border-amber-200'
+              : 'bg-amber-950/40 border-amber-800/50'
+          }`}>
             <div className="flex items-center gap-3">
-              <IconeAviso size={20} cor="#FCA5A5" />
+              <IconeAviso size={20} cor={currentTheme === 'light' ? '#B45309' : '#FCA5A5'} />
               {error}
             </div>
           </div>
@@ -208,35 +210,47 @@ export default function Dashboard() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div className="card bg-gradient-to-br from-indigo-900 to-indigo-800 text-white p-8 hover-lift hover-glow" data-scroll-animation="default" data-delay="1">
+          <div className={`card p-8 hover-lift hover-glow ${
+            currentTheme === 'light'
+              ? 'bg-gradient-to-br from-gray-100 to-gray-50 text-gray-900'
+              : 'bg-gradient-to-br from-gray-700 to-gray-600 text-white'
+          }`} data-scroll-animation="default" data-delay="1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-indigo-100 font-light">Total de Gastos</p>
-                <p className="text-4xl font-bold mt-3 tracking-tight">
+                <p className={`font-light ${currentTheme === 'light' ? 'text-gray-700' : 'text-gray-200'}`}>Total de Gastos</p>
+                <p className={`text-4xl font-bold mt-3 tracking-tight ${currentTheme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                   R$ {total.toFixed(2).replace('.', ',')}
                 </p>
               </div>
-              <div className="opacity-20"><IconeDinheiro size={48} cor="white" /></div>
+              <div className="opacity-20"><IconeDinheiro size={48} cor={currentTheme === 'light' ? '#374151' : 'white'} /></div>
             </div>
           </div>
 
-          <div className="card bg-gradient-to-br from-violet-900 to-violet-800 text-white p-8 hover-lift hover-glow" data-scroll-animation="default" data-delay="2">
+          <div className={`card p-8 hover-lift hover-glow ${
+            currentTheme === 'light'
+              ? 'bg-gradient-to-br from-gray-100 to-gray-50 text-gray-900'
+              : 'bg-gradient-to-br from-gray-700 to-gray-600 text-white'
+          }`} data-scroll-animation="default" data-delay="2">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-violet-100 font-light">Número de Gastos</p>
-                <p className="text-4xl font-bold mt-3 tracking-tight">
+                <p className={`font-light ${currentTheme === 'light' ? 'text-gray-700' : 'text-gray-200'}`}>Número de Gastos</p>
+                <p className={`text-4xl font-bold mt-3 tracking-tight ${currentTheme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                   {expenses.length}
                 </p>
               </div>
-              <div className="opacity-20"><IconeGrafico size={48} cor="white" /></div>
+              <div className="opacity-20"><IconeGrafico size={48} cor={currentTheme === 'light' ? '#374151' : 'white'} /></div>
             </div>
           </div>
 
-          <div className="card bg-gradient-to-br from-purple-900 to-purple-800 text-white p-8 hover-lift hover-glow" data-scroll-animation="default" data-delay="3">
+          <div className={`card p-8 hover-lift hover-glow ${
+            currentTheme === 'light'
+              ? 'bg-gradient-to-br from-gray-100 to-gray-50 text-gray-900'
+              : 'bg-gradient-to-br from-gray-700 to-gray-600 text-white'
+          }`} data-scroll-animation="default" data-delay="3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-100 font-light">Categorias</p>
-                <p className="text-4xl font-bold mt-3 tracking-tight">
+                <p className={`font-light ${currentTheme === 'light' ? 'text-gray-700' : 'text-gray-200'}`}>Categorias</p>
+                <p className={`text-4xl font-bold mt-3 tracking-tight ${currentTheme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                   {categories.length}
                 </p>
               </div>
@@ -284,14 +298,16 @@ export default function Dashboard() {
         {/* Category Filter */}
         {categories.length > 0 && (
           <div className="mb-10">
-            <h3 className="text-lg font-semibold text-white mb-6">Filtrar por Categoria</h3>
+            <h3 className={`text-lg font-semibold mb-6 ${currentTheme === 'light' ? 'text-black' : theme.colors.textPrimary}`}>
+              Filtrar por Categoria
+            </h3>
             <div className="flex gap-3 flex-wrap">
               <button
                 onClick={() => setSelectedCategory(null)}
-                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 border ${
                   selectedCategory === null
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/50'
-                    : 'bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700'
+                    ? `${theme.colors.btnPrimary} text-white shadow-md ${theme.colors.shadowColor}`
+                    : `${theme.colors.chipBg} ${theme.colors.chipBorder} ${theme.colors.textSecondary}`
                 }`}
               >
                 Todas
@@ -300,16 +316,16 @@ export default function Dashboard() {
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 border-2 ${
                     selectedCategory === cat.id
                       ? 'text-white shadow-md shadow-indigo-500/50'
-                      : 'hover:opacity-80 border-2'
+                      : `${theme.colors.textSecondary}`
                   }`}
                   style={{
                     backgroundColor:
-                      selectedCategory === cat.id ? cat.color : '#334155',
+                      selectedCategory === cat.id ? cat.color : (currentTheme === 'light' ? '#ffffff' : '#334155'),
                     borderColor: cat.color,
-                    color: selectedCategory === cat.id ? '#fff' : '#CBD5E1',
+                    color: selectedCategory === cat.id ? '#fff' : (currentTheme === 'light' ? '#0f172a' : '#CBD5E1'),
                   }}
                 >
                   {cat.name}

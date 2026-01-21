@@ -3,9 +3,12 @@ import { createRoot } from 'react-dom/client'
 import './estilos-globais.css'
 import './styles/scroll-animations.css'
 import App from './Aplicacao.jsx'
+import { ThemeProvider } from './context/ThemeContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   </StrictMode>,
 )

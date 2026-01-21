@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import { expenseService } from '../services/api';
 import { IconeEditar, IconeLixeira, IconeCarregando, IconeVerificacao, IconeCancelar } from './Icones';
 
 export default function ExpenseList({ expenses, categories, onExpenseDeleted }) {
+  const { theme, currentTheme } = useTheme();
   const [deletingId, setDeletingId] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
@@ -81,7 +83,11 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
       {expenses.map((expense, index) => (
         <div
           key={expense.id}
-          className="card bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 p-6 shadow-lg shadow-slate-950/50 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-300 hover-lift hover-glow rounded-2xl"
+          className={`card p-6 rounded-2xl transition-all duration-300 hover-lift hover-glow ${
+            currentTheme === 'light'
+              ? 'bg-white border border-gray-200 shadow-md hover:shadow-lg hover:shadow-gray-300/50'
+              : `${theme.colors.bgCard} ${theme.colors.borderPrimary} shadow-lg ${theme.colors.shadowColor} hover:shadow-xl`
+          }`}
           data-scroll-animation="default"
           data-delay={Math.min(Math.ceil(index / 2) + 1, 6)}
           style={{ fontFamily: '"Space Grotesk", "Inter", sans-serif' }}
@@ -95,7 +101,11 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                 onChange={(e) =>
                   setEditForm({ ...editForm, description: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all ${
+                  currentTheme === 'light'
+                    ? 'bg-gray-100 border border-gray-300 text-black focus:ring-sky-400'
+                    : 'bg-slate-800 border border-slate-700 text-white focus:ring-indigo-500'
+                }`}
               />
               <input
                 type="number"
@@ -103,7 +113,11 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                 onChange={(e) =>
                   setEditForm({ ...editForm, value: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all ${
+                  currentTheme === 'light'
+                    ? 'bg-gray-100 border border-gray-300 text-black focus:ring-sky-400'
+                    : 'bg-slate-800 border border-slate-700 text-white focus:ring-indigo-500'
+                }`}
                 step="0.01"
               />
               <select
@@ -111,7 +125,11 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                 onChange={(e) =>
                   setEditForm({ ...editForm, categoryId: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all appearance-none"
+                className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all appearance-none ${
+                  currentTheme === 'light'
+                    ? 'bg-gray-100 border border-gray-300 text-black focus:ring-sky-400'
+                    : 'bg-slate-800 border border-slate-700 text-white focus:ring-indigo-500'
+                }`}
               >
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
@@ -155,13 +173,13 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                       {getCategoryName(expense.categoryId)}
                     </span>
                   </div>
-                  <p className="font-bold text-white text-xl mb-2">
+                  <p className={`font-bold text-xl mb-2 ${currentTheme === 'light' ? 'text-black' : 'text-white'}`}>
                     {expense.description}
                   </p>
-                  <div className="flex items-center gap-3 text-xs">
-                    <span className="text-slate-400">{getDateInfo(expense.date)}</span>
-                    <span className="text-slate-600">•</span>
-                    <span className="text-slate-400 flex items-center gap-1">
+                  <div className={`flex items-center gap-3 text-xs ${currentTheme === 'light' ? 'text-slate-600' : 'text-slate-400'}`}>
+                    <span>{getDateInfo(expense.date)}</span>
+                    <span className={currentTheme === 'light' ? 'text-slate-400' : 'text-slate-600'}>•</span>
+                    <span className="flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: getCategoryColor(expense.categoryId) }}></span>
                       {new Date(expense.date || new Date()).toLocaleDateString('pt-BR')}
                     </span>
@@ -169,14 +187,14 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                 </div>
 
                 <div className="text-right">
-                  <p className="text-3xl font-black text-white tracking-tight">
+                  <p className={`text-3xl font-black tracking-tight ${currentTheme === 'light' ? 'text-black' : 'text-white'}`}>
                     {formatCurrency(expense.amount || expense.value || 0)}
                   </p>
-                  <p className="text-xs text-slate-400 mt-1">Gasto</p>
+                  <p className={`text-xs mt-1 ${currentTheme === 'light' ? 'text-slate-500' : 'text-slate-400'}`}>Gasto</p>
                 </div>
               </div>
 
-              <div className="flex gap-2 mt-4 pt-4 border-t border-slate-800">
+              <div className={`flex gap-2 mt-4 pt-4 ${currentTheme === 'light' ? 'border-t border-gray-200' : 'border-t border-slate-800'}`}>
                 <button
                   onClick={() => handleEditStart(expense)}
                   className="flex-1 px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 text-sm"
@@ -186,9 +204,15 @@ export default function ExpenseList({ expenses, categories, onExpenseDeleted }) 
                 <button
                   onClick={() => handleDelete(expense.id)}
                   disabled={deletingId === expense.id}
-                  className="flex-1 px-3 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 text-sm disabled:opacity-60"
+                  className={`flex-1 px-3 py-2 text-white font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2 text-sm disabled:opacity-60 ${
+                    currentTheme === 'light'
+                      ? 'bg-amber-600 hover:bg-amber-700'
+                      : currentTheme === 'gremio'
+                      ? 'bg-cyan-600 hover:bg-cyan-700'
+                      : 'bg-gray-600 hover:bg-gray-700'
+                  }`}
                 >
-                  {deletingId === expense.id ? <IconeCarregando size={18} cor="white" /> : <IconeLixeira size={18} cor="white" />}
+                  {deletingId === expense.id ? <IconeCarregando size={18} cor="white" /> : <IconeLixeira size={18} cor={currentTheme === 'gremio' ? '#06B6D4' : 'white'} />}
                 </button>
               </div>
             </>

@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import { categoryService } from '../services/api';
 import { IconeAviso, IconeCarregando, IconeLixeira, IconeMais } from './Icones';
 import ColorPicker from './ColorPicker';
 
 export default function CategoryManager({ categories, onCategoryCreated }) {
+  const { currentTheme } = useTheme();
   const [name, setName] = useState('');
   const [color, setColor] = useState('#3B82F6');
   const [loading, setLoading] = useState(false);
@@ -58,9 +60,13 @@ export default function CategoryManager({ categories, onCategoryCreated }) {
       <h3 className="text-3xl font-black text-white mb-8 bg-gradient-to-r from-indigo-200 to-white bg-clip-text text-transparent" data-scroll-animation="slide-left">Gerenciar Categorias</h3>
 
       {error && (
-        <div className="bg-red-950 border border-red-800 text-red-100 px-6 py-4 rounded-xl mb-6 flex items-center gap-3" data-scroll-animation="slide-left">
-          <IconeAviso size={20} cor="#FCA5A5" />
-          <p className="font-medium">{error}</p>
+        <div className={`border px-6 py-4 rounded-xl mb-6 flex items-center gap-3 ${
+          currentTheme === 'light'
+            ? 'bg-amber-50 border-amber-200'
+            : 'bg-amber-950/40 border-amber-800/50'
+        }`} data-scroll-animation="slide-left">
+          <IconeAviso size={20} cor={currentTheme === 'light' ? '#B45309' : '#FCA5A5'} />
+          <p className={`font-medium ${currentTheme === 'light' ? 'text-amber-800' : 'text-amber-200'}`}>{error}</p>
         </div>
       )}
 
@@ -124,9 +130,15 @@ export default function CategoryManager({ categories, onCategoryCreated }) {
                 <button
                   onClick={() => handleDelete(cat.id)}
                   disabled={deletingId === cat.id}
-                  className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-300 font-semibold text-sm flex items-center gap-2 hover:shadow-lg hover:shadow-red-500/30 flex-shrink-0"
+                  className={`px-3 py-2 text-white rounded-lg transition-all duration-300 font-semibold text-sm flex items-center gap-2 flex-shrink-0 ${
+                    currentTheme === 'light'
+                      ? 'bg-amber-600 hover:bg-amber-700 hover:shadow-lg hover:shadow-amber-500/30'
+                      : currentTheme === 'gremio'
+                      ? 'bg-cyan-600 hover:bg-cyan-700 hover:shadow-lg hover:shadow-cyan-500/30'
+                      : 'bg-gray-600 hover:bg-gray-700 hover:shadow-lg hover:shadow-gray-500/30'
+                  }`}
                 >
-                  {deletingId === cat.id ? <IconeCarregando size={16} cor="white" /> : <IconeLixeira size={16} cor="white" />}
+                  {deletingId === cat.id ? <IconeCarregando size={16} cor="white" /> : <IconeLixeira size={16} cor={currentTheme === 'gremio' ? '#06B6D4' : 'white'} />}
                 </button>
               </div>
             ))}
